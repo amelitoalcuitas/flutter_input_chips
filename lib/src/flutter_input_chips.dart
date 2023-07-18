@@ -45,6 +45,9 @@ class FlutterInputChips extends StatefulWidget {
   /// spacing between chips
   final double chipSpacing;
 
+  /// spacing between chips row
+  final double chipVerticalSpacing;
+
   /// style for chip text/label
   final TextStyle? chipTextStyle;
 
@@ -75,6 +78,7 @@ class FlutterInputChips extends StatefulWidget {
     this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
     this.chipCanDelete = true,
     this.chipSpacing = 5,
+    this.chipVerticalSpacing = 5,
     this.maxChips,
     this.decoration,
     this.chipTextStyle,
@@ -138,6 +142,7 @@ class FlutterInputChipsState extends State<FlutterInputChips> {
         children: [
           Wrap(
               spacing: widget.chipSpacing,
+              runSpacing: widget.chipVerticalSpacing,
               children: chips
                   .map((e) => GestureDetector(
                         onTap: () => onChipSelected(e),
