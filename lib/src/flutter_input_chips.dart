@@ -136,7 +136,7 @@ class FlutterInputChipsState extends State<FlutterInputChips> {
     return Container(
       padding: widget.padding,
       decoration: widget.decoration,
-      child: Column(
+      child: Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
