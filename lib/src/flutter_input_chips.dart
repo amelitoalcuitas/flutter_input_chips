@@ -140,23 +140,6 @@ class FlutterInputChipsState extends State<FlutterInputChips> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Wrap(
-              spacing: widget.chipSpacing,
-              runSpacing: widget.chipVerticalSpacing,
-              children: chips
-                  .map((e) => GestureDetector(
-                        onTap: () => onChipSelected(e),
-                        child: Chip(
-                          label: Text(e, overflow: widget.textOverflow),
-                          onDeleted:
-                              widget.chipCanDelete ? () => deleteChip(e) : null,
-                          deleteIcon: widget.chipDeleteIcon,
-                          backgroundColor: widget.chipBackgroundColor,
-                          labelStyle: widget.chipTextStyle,
-                          deleteIconColor: widget.chipDeleteIconColor,
-                        ),
-                      ))
-                  .toList()),
           TextField(
             controller: textCtrl,
             onSubmitted: (value) => addChip(value),
@@ -164,7 +147,26 @@ class FlutterInputChipsState extends State<FlutterInputChips> {
               if (value.contains(",")) addChip(value.replaceAll(",", ""));
             },
             onEditingComplete: () {}, // this prevents keyboard from closing
-            decoration: widget.inputDecoration,
+            decoration: widget.inputDecoration.copyWith(
+              prefixIcon: Wrap(
+                  spacing: widget.chipSpacing,
+                  runSpacing: widget.chipVerticalSpacing,
+                  children: chips
+                      .map((e) => GestureDetector(
+                            onTap: () => onChipSelected(e),
+                            child: Chip(
+                              label: Text(e, overflow: widget.textOverflow),
+                              onDeleted: widget.chipCanDelete
+                                  ? () => deleteChip(e)
+                                  : null,
+                              deleteIcon: widget.chipDeleteIcon,
+                              backgroundColor: widget.chipBackgroundColor,
+                              labelStyle: widget.chipTextStyle,
+                              deleteIconColor: widget.chipDeleteIconColor,
+                            ),
+                          ))
+                      .toList()),
+            ),
             textInputAction: widget.inputAction,
             keyboardType: widget.inputType,
             keyboardAppearance: widget.keyboardAppearance,
