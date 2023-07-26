@@ -120,10 +120,24 @@ class FlutterInputChipsState extends State<FlutterInputChips> {
   void addChip(String value) {
     if (value.isEmpty || _hasReachedMaxChips) return;
     setState(() {
-      chips.add(value.trim().toLowerCase());
+      chips.add(capitalizeWords(value.trim().toLowerCase()));
     });
     textCtrl.clear();
     widget.onChanged(chips.toList(growable: false));
+  }
+
+  String capitalizeWords(String str) {
+    if (str.isEmpty) {
+      return str;
+    }
+    List<String> words = str.split(" ");
+    for (int i = 0; i < words.length; i++) {
+      String word = words[i];
+      if (word.isNotEmpty) {
+        words[i] = "${word[0].toUpperCase()}${word.substring(1)}";
+      }
+    }
+    return words.join(" ");
   }
 
   /// sets the selected chip's value to the text field
