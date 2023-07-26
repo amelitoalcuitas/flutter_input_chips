@@ -171,6 +171,7 @@ class FlutterInputChipsState extends State<FlutterInputChips> {
             textCapitalization: widget.textCapitalization,
             enabled: widget.enabled,
             autofocus: widget.autofocus,
+            maxLength: 30,
           ),
         ],
       ),
