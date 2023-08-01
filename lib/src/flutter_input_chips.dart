@@ -120,7 +120,7 @@ class FlutterInputChipsState extends State<FlutterInputChips> {
   void addChip(String value) {
     if (value.isEmpty || _hasReachedMaxChips) return;
     setState(() {
-      chips.add(capitalizeWords(value.trim().toLowerCase()));
+      chips.add(capitalizeWords(value.trim().toLowerCase()).trim());
     });
     textCtrl.clear();
     widget.onChanged(chips.toList(growable: false));
