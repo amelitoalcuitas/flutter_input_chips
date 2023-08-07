@@ -107,6 +107,8 @@ class FlutterInputChipsState extends State<FlutterInputChips> {
   bool get _hasReachedMaxChips =>
       widget.maxChips != null && chips.length >= widget.maxChips!;
 
+  bool hasNumbers = false;
+
   @override
   void initState() {
     chips.addAll(widget.initialValue);
@@ -123,11 +125,9 @@ class FlutterInputChipsState extends State<FlutterInputChips> {
 
   /// adds the chip to the list, clear the text field and calls [widget.onChanged]
   void addChip(String value) {
-    if (value.isEmpty || _hasReachedMaxChips) {
-      return;
-    }
+    hasNumbers = false;
 
-    if (isAllowedNumbers(value)) {
+    if (value.isEmpty || _hasReachedMaxChips || hasNumbers) {
       return;
     }
 
@@ -140,7 +140,8 @@ class FlutterInputChipsState extends State<FlutterInputChips> {
   }
 
   bool isAllowedNumbers(String value) {
-    return !(widget.allowNumbers ?? true) && RegExp(r'\d').hasMatch(value);
+    return hasNumbers =
+        !(widget.allowNumbers ?? true) && RegExp(r'\d').hasMatch(value);
   }
 
   String capitalizeWords(String str) {
@@ -193,6 +194,8 @@ class FlutterInputChipsState extends State<FlutterInputChips> {
             onFieldSubmitted: (value) => addChip(value),
             onChanged: (value) {
               if (value.contains(",")) addChip(value.replaceAll(",", ""));
+
+              isAllowedNumbers(value);
             },
             onEditingComplete: () {}, // this prevents keyboard from closing
             decoration: widget.inputDecoration,
@@ -203,8 +206,9 @@ class FlutterInputChipsState extends State<FlutterInputChips> {
             enabled: widget.enabled,
             autofocus: widget.autofocus,
             maxLength: 30,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (value) {
-              if (isAllowedNumbers(value!)) {
+              if (hasNumbers) {
                 return 'Invalid name format';
               }
               return null;
