@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 
 ///
@@ -63,6 +65,8 @@ class FlutterInputChips extends StatefulWidget {
   /// Color for delete icon in the chip
   final Color? chipDeleteIconColor;
 
+  final bool? allowNumbers;
+
   const FlutterInputChips({
     super.key,
     required this.onChanged,
@@ -85,6 +89,7 @@ class FlutterInputChips extends StatefulWidget {
     this.chipBackgroundColor,
     this.chipDeleteIcon,
     this.chipDeleteIconColor,
+    this.allowNumbers,
   }) : assert(maxChips == null || initialValue.length <= maxChips);
 
   @override
@@ -118,8 +123,14 @@ class FlutterInputChipsState extends State<FlutterInputChips> {
 
   /// adds the chip to the list, clear the text field and calls [widget.onChanged]
   void addChip(String value) {
-    if (value.isEmpty || _hasReachedMaxChips || RegExp(r'\d').hasMatch(value)) {
+    if (value.isEmpty || _hasReachedMaxChips) {
       return;
+    }
+
+    if ((widget.allowNumbers != null && widget.allowNumbers == true)) {
+      if (RegExp(r'\d').hasMatch(value)) {
+        return;
+      }
     }
 
     setState(() {
