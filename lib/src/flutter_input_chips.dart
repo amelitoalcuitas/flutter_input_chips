@@ -118,7 +118,10 @@ class FlutterInputChipsState extends State<FlutterInputChips> {
 
   /// adds the chip to the list, clear the text field and calls [widget.onChanged]
   void addChip(String value) {
-    if (value.isEmpty || _hasReachedMaxChips) return;
+    if (value.isEmpty || _hasReachedMaxChips || RegExp(r'\d').hasMatch(value)) {
+      return;
+    }
+
     setState(() {
       chips.add(capitalizeWords(value.trim().toLowerCase())
           .replaceAll(RegExp(r'\s+'), ' '));
