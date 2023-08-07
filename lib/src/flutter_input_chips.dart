@@ -127,10 +127,8 @@ class FlutterInputChipsState extends State<FlutterInputChips> {
       return;
     }
 
-    if ((widget.allowNumbers != null && widget.allowNumbers == true)) {
-      if (RegExp(r'\d').hasMatch(value)) {
-        return;
-      }
+    if (!(widget.allowNumbers ?? true) && RegExp(r'\d').hasMatch(value)) {
+      return;
     }
 
     setState(() {
