@@ -127,7 +127,7 @@ class FlutterInputChipsState extends State<FlutterInputChips> {
       return;
     }
 
-    if (!(widget.allowNumbers ?? true) && RegExp(r'\d').hasMatch(value)) {
+    if (isAllowedNumbers(value)) {
       return;
     }
 
@@ -137,6 +137,10 @@ class FlutterInputChipsState extends State<FlutterInputChips> {
     });
     textCtrl.clear();
     widget.onChanged(chips.toList(growable: false));
+  }
+
+  bool isAllowedNumbers(String value) {
+    return !(widget.allowNumbers ?? true) && RegExp(r'\d').hasMatch(value);
   }
 
   String capitalizeWords(String str) {
@@ -184,9 +188,9 @@ class FlutterInputChipsState extends State<FlutterInputChips> {
                         ),
                       ))
                   .toList()),
-          TextField(
+          TextFormField(
             controller: textCtrl,
-            onSubmitted: (value) => addChip(value),
+            onFieldSubmitted: (value) => addChip(value),
             onChanged: (value) {
               if (value.contains(",")) addChip(value.replaceAll(",", ""));
             },
@@ -199,6 +203,12 @@ class FlutterInputChipsState extends State<FlutterInputChips> {
             enabled: widget.enabled,
             autofocus: widget.autofocus,
             maxLength: 30,
+            validator: (value) {
+              if (isAllowedNumbers(value!)) {
+                return 'Invalid name format';
+              }
+              return null;
+            },
           ),
         ],
       ),
