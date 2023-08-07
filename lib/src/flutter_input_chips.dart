@@ -125,8 +125,6 @@ class FlutterInputChipsState extends State<FlutterInputChips> {
 
   /// adds the chip to the list, clear the text field and calls [widget.onChanged]
   void addChip(String value) {
-    hasNumbers = false;
-
     if (value.isEmpty || _hasReachedMaxChips || hasNumbers) {
       return;
     }
